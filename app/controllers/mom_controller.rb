@@ -23,10 +23,34 @@ class MomController < ApplicationController
   end
 
   def create
-    pc = PhoneCall.new(:direction => 0, :duration => 0)
-    pc.save!
-    puts params
-    render :text => params
+    # Parameters: {"AccountSid"=>"AC2c0c745ec4d44b2e8c34ce702d81dadd", "ToZip"=>"", "FromState"=>"NY", "Called"=>"+19177192233", "FromCountry"=>"US", "CallerCountry"=>"US", "CalledZip"=>"", "Direction"=>"inbound", "FromCity"=>"NEW YORK", "CalledCountry"=>"US", "CallerState"=>"NY", "CallSid"=>"CA7287ed5793ee58458ea8ffb931e49224", "CalledState"=>"NY", "From"=>"+19175731568", "CallerZip"=>"10028", "FromZip"=>"10028", "CallStatus"=>"ringing", "ToCity"=>"", "ToState"=>"NY", "To"=>"+19177192233", "ToCountry"=>"US", "CallerCity"=>"NEW YORK", "ApiVersion"=>"2010-04-01", "Caller"=>"+19175731568", "CalledCity"=>""}
+
+    unless params['AccountSid'].nil?
+      pc = PhoneCall.new(:direction => 0, :duration => 0)
+
+      direction = -1
+      case params['Direction']
+      when 'outbound'
+        direction = 0
+      when 'inbound'
+        direction = 1
+      end
+
+      pc(:direction => direction)
+
+      pc.save!
+      puts params
+
+      # build up a response
+      response = Twilio::TwiML::Response.new do |r|
+        r.Say 'Got ya buddy', :voice => 'woman'
+      end
+
+      render :xml => response.text
+    else
+      render :text => params
+    end
+
   end
 
   def call
