@@ -1,6 +1,6 @@
 class MomController < ApplicationController
   def index
-    render :text => 'it\'s cool'
+    # render :text => 'it\'s cool'
 
     # set up a client to talk to the Twilio REST API
     account_sid = 'AC2c0c745ec4d44b2e8c34ce702d81dadd'
@@ -8,11 +8,11 @@ class MomController < ApplicationController
     @client = Twilio::REST::Client.new account_sid, auth_token
 
     # send an sms
-    @client.account.sms.messages.create(
-                                 :from => '+19177192233',
-                                 :to => '+19175731568',
-                                 :body => 'HOOAH'
-                                 )
+    # @client.account.sms.messages.create(
+    #                              :from => '+19177192233',
+    #                              :to => '+19175731568',
+    #                              :body => 'HOOAH'
+    #                             )
 
     # build up a response
     response = Twilio::TwiML::Response.new do |r|
@@ -21,6 +21,7 @@ class MomController < ApplicationController
         d.Client 'jenny'
       end
     end
-    puts response.text
+
+    render :xml => response.text
   end
 end
