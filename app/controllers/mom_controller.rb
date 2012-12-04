@@ -36,7 +36,7 @@ class MomController < ApplicationController
         direction = 1
       end
 
-      pc(:direction => direction)
+      pc.direction = direction
 
       pc.save!
       puts params
