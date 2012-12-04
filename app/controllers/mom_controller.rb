@@ -25,7 +25,8 @@ class MomController < ApplicationController
   def create
     pc = PhoneCall.new(:direction => 0, :duration => 0)
     pc.save!
-    render :text => 'OK'
+    puts params
+    render :text => params
   end
 
   def call
