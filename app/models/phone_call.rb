@@ -1,11 +1,14 @@
 class PhoneCall < ActiveRecord::Base
   validates :direction, :duration, :presence => true
   validates :direction, :duration, :response_time, :numericality => { :only_integer => true }, :allow_nil => true
+  validates_uniqueness_of :call_sid, :case_sensitive => true
 
   def direction=(direction_string)
     direction = -1
     case direction_string
-      when 'outbound'
+      when 'outbound-api'
+        direction = 0
+      when 'outbound-dial'
         direction = 0
       when 'inbound'
         direction = 1
