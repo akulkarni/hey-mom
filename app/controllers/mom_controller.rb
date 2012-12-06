@@ -84,4 +84,8 @@ class MomController < ApplicationController
     render :text => 'OK'
   end
 
+  def logs
+    @phone_calls = PhoneCall.all
+  end
+
 end

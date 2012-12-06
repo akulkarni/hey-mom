@@ -1,6 +1,7 @@
 Callmom::Application.routes.draw do
   match 'mom/call' => 'mom#call'
   match 'mom/call_ended' => 'mom#call_ended'
+  match 'mom/logz' => 'mom#logs'
   resources :mom
 
   # The priority is based upon order of creation:

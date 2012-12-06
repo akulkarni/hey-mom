@@ -1,0 +1,19 @@
+<h1>logsz!!</h1>
+
+<table border=2 cellpadding=10>
+  <tr>
+    <th>Time</th>
+    <th>Inbound</th>
+    <th>Duration</th>
+    <th>Status</th>
+  </tr>
+ 
+<% @phone_calls.each do |phone_call| %>
+  <tr>
+    <td><%= phone_call.created_at %></td>
+    <td><%= phone_call.inbound %></td>
+    <td><%= phone_call.duration %></td>
+    <td><%= phone_call.status %></td>
+  </tr>
+<% end %>
+</table>
