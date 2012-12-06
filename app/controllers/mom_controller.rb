@@ -23,17 +23,13 @@ class MomController < ApplicationController
   end
 
   def call_ended
-    puts params
     unless params['CallSid'].nil?
       pc = PhoneCall.where('call_sid = ?', params['CallSid']).first
-      puts pc
       unless pc.nil?
-        puts params['CallDuration']
         pc.duration = params['CallDuration']
         pc.save!
       end
     end
-
     render :text => 'OK'
   end
 
@@ -78,6 +74,9 @@ class MomController < ApplicationController
     @account = @client.account
     @call = @account.calls.create({:from => '+19177192233', :to => '+19175731568',
                                     :application_sid => 'APdc87b7898e076eb779098b3293d0e60a'})
+
+    create(params)
+
     render :text => 'OK'
   end
 end
