@@ -39,20 +39,7 @@ class MomController < ApplicationController
 
     unless params['AccountSid'].nil?
       pc = PhoneCall.new(:direction => params['Direction'], :duration => 0, :call_sid => params['CallSid'])
-#      pc.call_sid = params['CallSid']
-
-#      direction = -1
-#      case params['Direction']
-#      when 'outbound'
-#        direction = 0
-#      when 'inbound'
-#        direction = 1
-#      end
-
-#      pc.direction = direction
-
       pc.save!
-#      puts params
 
       # build up a response
       response = Twilio::TwiML::Response.new do |r|
@@ -75,7 +62,7 @@ class MomController < ApplicationController
     @account = @client.account
     @call = @account.calls.create({:from => '+19177192233', :to => '+19175731568',
                                     :application_sid => 'APdc87b7898e076eb779098b3293d0e60a',
-                                  :status_callback => 'http://callmom.herokuapp.com/call_ended'})
+                                  :status_callback => 'http://callmom.herokuapp.com/mom/call_ended'})
 
     pc = PhoneCall.new(:direction => 'outbound', :duration => 0, :call_sid => @call.sid)
     pc.save!
