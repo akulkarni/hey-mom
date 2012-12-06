@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121206030725) do
+ActiveRecord::Schema.define(:version => 20121206034021) do
 
   create_table "phone_calls", :force => true do |t|
     t.integer  "duration"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20121206030725) do
     t.string   "call_sid"
     t.boolean  "inbound"
     t.string   "status"
+    t.boolean  "missed_call"
   end
 
 end

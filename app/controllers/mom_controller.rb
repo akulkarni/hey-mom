@@ -30,8 +30,15 @@ class MomController < ApplicationController
       unless pc.nil?
         pc.duration = params['CallDuration']
         pc.status = params['CallStatus']
-        pc.save!
+      else
+        pc = PhoneCall.new(:inbound => params['Direction'], :duration => params['CallDuration'], :call_sid => params['CallSid'], :status => params['CallStatus'])
       end
+
+      if params['AnsweredBy'] == 'machine'
+        pc.missed_call = true
+      end
+
+      pc.save!
     end
     render :text => 'OK'
   end
