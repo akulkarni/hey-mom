@@ -61,7 +61,8 @@ class MomController < ApplicationController
 
     @account = @client.account
     @call = @account.calls.create({:from => '+19177192233', :to => '+19175731568',
-                                    :application_sid => 'APdc87b7898e076eb779098b3293d0e60a',
+#                                    :application_sid => 'APdc87b7898e076eb779098b3293d0e60a',
+                                    :url => 'http://callmom.herokuapp.com/mom',
                                   :status_callback => 'http://callmom.herokuapp.com/mom/call_ended'})
 
     pc = PhoneCall.new(:direction => 'outbound', :duration => 0, :call_sid => @call.sid)
