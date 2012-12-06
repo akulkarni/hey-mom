@@ -1,34 +1,33 @@
 class PhoneCall < ActiveRecord::Base
-  validates :direction, :duration, :presence => true
-  validates :direction, :duration, :response_time, :numericality => { :only_integer => true }, :allow_nil => true
   validates_uniqueness_of :call_sid, :case_sensitive => true
+  validates :inbound, :inclusion => {:in => [true, false]}, :allow_nil => true
+  validates :duration, :response_time, :numericality => { :only_integer => true }, :allow_nil => true
 
-  def direction=(direction_string)
-    direction = -1
-    case direction_string
-      when 'outbound-api'
-        direction = 0
-      when 'outbound-dial'
-        direction = 0
-      when 'inbound'
-        direction = 1
-      when 'missed'
-        direction = 2
+  def inbound=(direction)
+    inbound = nil
+    case direction
+    when 'outbound-api'
+      inbound = false
+    when 'outbound-dial'
+      inbound = false
+    when 'inbound'
+      inbound = true
     end
-    write_attribute(:direction, direction)
+    write_attribute(:inbound, inbound)
   end
 
-  def direction
-    direction_string = 'none'
-    case read_attribute(:direction)
-      when 0
-        direction_string = 'outbound'
-      when 1
-        direction_string = 'inbound'
-      when 2
-        direction_string = 'missed'
+  def inbound
+    direction = 'none'
+    if read_attribute(:inbound) == 'true'
+      direction = 'inbound'
+    else
+      direction = 'outbound'
     end
-    direction_string
+    direction
+  end
+
+  def missed?
+    return read_attribute(:status) == 'no-answer'
   end
 
 end

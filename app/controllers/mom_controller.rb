@@ -24,10 +24,12 @@ class MomController < ApplicationController
 
   def call_ended
     puts 'call ended'
+    puts params
     unless params['CallSid'].nil?
       pc = PhoneCall.where('call_sid = ?', params['CallSid']).first
       unless pc.nil?
         pc.duration = params['CallDuration']
+        pc.status = params['CallStatus']
         pc.save!
       end
     end
@@ -39,7 +41,7 @@ class MomController < ApplicationController
     puts params
 
     unless params['AccountSid'].nil?
-      pc = PhoneCall.new(:direction => params['Direction'], :duration => 0, :call_sid => params['CallSid'])
+      pc = PhoneCall.new(:inbound => params['Direction'], :duration => 0, :call_sid => params['CallSid'])
       pc.save!
 
       # build up a response
