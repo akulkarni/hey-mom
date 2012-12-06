@@ -23,6 +23,7 @@ class MomController < ApplicationController
   end
 
   def call_ended
+    puts 'call ended'
     unless params['CallSid'].nil?
       pc = PhoneCall.where('call_sid = ?', params['CallSid']).first
       unless pc.nil?
@@ -76,7 +77,8 @@ class MomController < ApplicationController
                                     :application_sid => 'APdc87b7898e076eb779098b3293d0e60a',
                                   :status_callback => 'http://callmom.herokuapp.com/call_ended'})
 
-    create()
+    pc = PhoneCall.new(:direction => 'outbound', :duration => 0, :call_sid => @call.sid)
+    pc.save!
 
     render :text => 'OK'
   end
