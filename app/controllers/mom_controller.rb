@@ -37,21 +37,21 @@ class MomController < ApplicationController
     # Parameters: {"AccountSid"=>"AC2c0c745ec4d44b2e8c34ce702d81dadd", "ToZip"=>"", "FromState"=>"NY", "Called"=>"+19177192233", "FromCountry"=>"US", "CallerCountry"=>"US", "CalledZip"=>"", "Direction"=>"inbound", "FromCity"=>"NEW YORK", "CalledCountry"=>"US", "CallerState"=>"NY", "CallSid"=>"CA7287ed5793ee58458ea8ffb931e49224", "CalledState"=>"NY", "From"=>"+19175731568", "CallerZip"=>"10028", "FromZip"=>"10028", "CallStatus"=>"ringing", "ToCity"=>"", "ToState"=>"NY", "To"=>"+19177192233", "ToCountry"=>"US", "CallerCity"=>"NEW YORK", "ApiVersion"=>"2010-04-01", "Caller"=>"+19175731568", "CalledCity"=>""}
 
     unless params['AccountSid'].nil?
-      pc = PhoneCall.new(:direction => 0, :duration => 0)
-      pc.call_sid = params['CallSid']
+      pc = PhoneCall.new(:direction => params['Direction'], :duration => 0, :call_sid => params['CallSid')
+#      pc.call_sid = params['CallSid']
 
-      direction = -1
-      case params['Direction']
-      when 'outbound'
-        direction = 0
-      when 'inbound'
-        direction = 1
-      end
+#      direction = -1
+#      case params['Direction']
+#      when 'outbound'
+#        direction = 0
+#      when 'inbound'
+#        direction = 1
+#      end
 
-      pc.direction = direction
+#      pc.direction = direction
 
       pc.save!
-      puts params
+#      puts params
 
       # build up a response
       response = Twilio::TwiML::Response.new do |r|
@@ -73,10 +73,12 @@ class MomController < ApplicationController
 
     @account = @client.account
     @call = @account.calls.create({:from => '+19177192233', :to => '+19175731568',
-                                    :application_sid => 'APdc87b7898e076eb779098b3293d0e60a'})
+                                    :application_sid => 'APdc87b7898e076eb779098b3293d0e60a',
+                                  :status_callback => 'http://callmom.herokuapp.com/call_ended'})
 
-    create(params)
+    create()
 
     render :text => 'OK'
   end
+
 end
