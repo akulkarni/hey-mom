@@ -24,10 +24,13 @@ class MomController < ApplicationController
 
   def call_ended
     puts params
-    phone_call = PhoneCall.where('call_sid = ?', params['CallSid'])
-    unless phone_call.empty?
-      phone_call.duration = params['CallDuration']
-      phone_call.save!
+    unless params['CallSid'].nil?
+      phone_call = PhoneCall.where('call_sid = ?', params['CallSid'])
+      puts phone_call
+      unless phone_call.empty?
+        phone_call.duration = params['CallDuration']
+        phone_call.save!
+      end
     end
 
     render :text => 'OK'
