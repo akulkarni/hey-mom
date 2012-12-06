@@ -36,6 +36,7 @@ class MomController < ApplicationController
 
       if params['AnsweredBy'] == 'machine'
         pc.missed_call = true
+        pc.duration = 0
       end
 
       pc.save!
