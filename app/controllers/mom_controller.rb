@@ -24,7 +24,7 @@ class MomController < ApplicationController
 
   def call_ended
     puts 'call ended'
-    puts params
+#    puts params
     unless params['CallSid'].nil?
       pc = PhoneCall.where('call_sid = ?', params['CallSid']).first
       unless pc.nil?
@@ -38,7 +38,7 @@ class MomController < ApplicationController
 
   def create
     # Parameters: {"AccountSid"=>"AC2c0c745ec4d44b2e8c34ce702d81dadd", "ToZip"=>"", "FromState"=>"NY", "Called"=>"+19177192233", "FromCountry"=>"US", "CallerCountry"=>"US", "CalledZip"=>"", "Direction"=>"inbound", "FromCity"=>"NEW YORK", "CalledCountry"=>"US", "CallerState"=>"NY", "CallSid"=>"CA7287ed5793ee58458ea8ffb931e49224", "CalledState"=>"NY", "From"=>"+19175731568", "CallerZip"=>"10028", "FromZip"=>"10028", "CallStatus"=>"ringing", "ToCity"=>"", "ToState"=>"NY", "To"=>"+19177192233", "ToCountry"=>"US", "CallerCity"=>"NEW YORK", "ApiVersion"=>"2010-04-01", "Caller"=>"+19175731568", "CalledCity"=>""}
-    puts params
+#    puts params
 
     unless params['AccountSid'].nil?
       pc = PhoneCall.new(:inbound => params['Direction'], :duration => 0, :call_sid => params['CallSid'])
@@ -66,7 +66,9 @@ class MomController < ApplicationController
     @call = @account.calls.create({:from => '+19177192233', :to => '+19175731568',
 #                                    :application_sid => 'APdc87b7898e076eb779098b3293d0e60a',
                                     :url => 'http://callmom.herokuapp.com/mom',
-                                  :status_callback => 'http://callmom.herokuapp.com/mom/call_ended'})
+                                  :status_callback => 'http://callmom.herokuapp.com/mom/call_ended',
+                                    :if_machine => 'hangup'
+                                  })
 
 #    pc = PhoneCall.new(:direction => 'outbound', :duration => 0, :call_sid => @call.sid)
 #    pc.save!
