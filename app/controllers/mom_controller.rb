@@ -85,7 +85,8 @@ class MomController < ApplicationController
   end
 
   def logs
-    @phone_calls = PhoneCall.all
+    @phone_calls = PhoneCall.order(:created_at).reverse_order
+#    @phone_calls = PhoneCall.all
   end
 
 end
