@@ -27,7 +27,7 @@ class MomController < ApplicationController
     unless params['CallSid'].nil?
       pc = PhoneCall.where('call_sid = ?', params['CallSid']).first
       puts pc
-      unless pc.empty?
+      unless pc.nil?
         puts params['CallDuration']
         pc.duration = params['CallDuration']
         pc.save!
