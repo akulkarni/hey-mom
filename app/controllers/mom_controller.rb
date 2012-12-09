@@ -24,7 +24,7 @@ class MomController < ApplicationController
 
   def call_ended
     puts 'call ended'
-#    puts params
+    puts params
     unless params['CallSid'].nil?
       pc = PhoneCall.where('call_sid = ?', params['CallSid']).first
       unless pc.nil?
@@ -44,6 +44,11 @@ class MomController < ApplicationController
     render :text => 'OK'
   end
 
+  def asdf
+    puts 'asdf'
+    puts params
+  end
+
   def create
     # Parameters: {"AccountSid"=>"AC2c0c745ec4d44b2e8c34ce702d81dadd", "ToZip"=>"", "FromState"=>"NY", "Called"=>"+19177192233", "FromCountry"=>"US", "CallerCountry"=>"US", "CalledZip"=>"", "Direction"=>"inbound", "FromCity"=>"NEW YORK", "CalledCountry"=>"US", "CallerState"=>"NY", "CallSid"=>"CA7287ed5793ee58458ea8ffb931e49224", "CalledState"=>"NY", "From"=>"+19175731568", "CallerZip"=>"10028", "FromZip"=>"10028", "CallStatus"=>"ringing", "ToCity"=>"", "ToState"=>"NY", "To"=>"+19177192233", "ToCountry"=>"US", "CallerCity"=>"NEW YORK", "ApiVersion"=>"2010-04-01", "Caller"=>"+19175731568", "CalledCity"=>""}
 #    puts params
@@ -55,7 +60,7 @@ class MomController < ApplicationController
       # build up a response
       response = Twilio::TwiML::Response.new do |r|
         r.Say 'Connecting you in one second', :voice => 'woman'
-        r.Dial :callerId => '+19177192233' do |d|
+        r.Dial :callerId => '+19177192233' :action => '/mom/asdf' do |d|
           d.Number '+19175731568'
         end
       end
