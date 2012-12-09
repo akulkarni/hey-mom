@@ -54,7 +54,10 @@ class MomController < ApplicationController
 
       # build up a response
       response = Twilio::TwiML::Response.new do |r|
-        r.Say 'Got ya buddy', :voice => 'woman'
+        r.Say 'Connecting you in one second', :voice => 'woman'
+        r.Dial :callerId => '+19177192233' do |d|
+          d.Number '+19175731568'
+        end
       end
 
       render :xml => response.text
