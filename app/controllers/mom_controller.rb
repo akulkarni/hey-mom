@@ -60,7 +60,7 @@ class MomController < ApplicationController
       # build up a response
       response = Twilio::TwiML::Response.new do |r|
         r.Say 'Connecting you in one second', :voice => 'woman'
-        r.Dial :callerId => '+19177192233', :action => '/mom/asdf' do |d|
+        r.Dial :callerId => '+19177192233', :action => '/mom/asdf', :if_machine => 'hangup' do |d|
           d.Number '+19175731568'
         end
       end
