@@ -23,8 +23,6 @@ class MomController < ApplicationController
   end
 
   def call_ended
-    puts 'call ended'
-    puts params
     unless params['CallSid'].nil?
       pc = PhoneCall.where('call_sid = ?', params['CallSid']).first
       unless pc.nil?
@@ -45,8 +43,7 @@ class MomController < ApplicationController
   end
 
   def asdf
-    puts 'asdf'
-    puts params
+    render :nothing => true
   end
 
   def create
