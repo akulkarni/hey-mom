@@ -27,8 +27,8 @@ class PhoneCall < ActiveRecord::Base
     direction
   end
 
-  def missed?
-    return read_attribute(:status) == 'no-answer'
-  end
+#  def missed?
+#    return read_attribute(:status) == 'no-answer'
+#  end
 
 end

@@ -36,8 +36,8 @@ class MomController < ApplicationController
       end
 
       # we don't always know if a call went to voicemail, so we assume short calls were missed
-      if (params['AnsweredBy'] == 'machine') or (params['CallDuration'].to_i < 75)
-        puts 'missed!'
+      if (params['AnsweredBy'] == 'machine') or
+          ((params['CallDuration'].to_i > 10) and (params['CallDuration'].to_i < 65))
         pc.missed_call = true
         if params['AnsweredBy'] == 'machine'
           # probably a better way to do this
@@ -46,6 +46,14 @@ class MomController < ApplicationController
       end
 
       pc.save!
+
+      # record response time for the previous missed call from the counterparty
+      pc_prev = PhoneCall.where(:inbound => !pc.inbound, :missed_call => true).last!
+      unless pc_prev.nil?
+        pc_prev.response_time = pc - pc_prev
+        pc_prev.save!
+      end
+
     end
     render :text => 'OK'
   end
