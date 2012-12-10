@@ -50,7 +50,7 @@ class MomController < ApplicationController
       # record response time for the previous missed call from the counterparty
       pc_prev = PhoneCall.where(:inbound => !pc.inbound, :missed_call => true).last!
       unless pc_prev.nil?
-        pc_prev.response_time = pc - pc_prev
+        pc_prev.response_time = pc.created_at - pc_prev.created_at
         pc_prev.save!
       end
 
