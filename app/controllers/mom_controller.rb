@@ -64,18 +64,21 @@ class MomController < ApplicationController
         # son --> mom
         counterparty = MOM
         direction = 'outbound'
+        name = 'Ajay'
       elsif params['From'] == MOM
         # mom --> son
         counterparty = SON
         direction = 'inbound'
+        name = 'Mom'
       end
 
       pc = PhoneCall.new(:inbound => direction, :duration => 0, :call_sid => params['CallSid'])
       pc.save!
 
       # build up a response
+      greeting = 'Hi %s, connecting you right now.' % name
       response = Twilio::TwiML::Response.new do |r|
-        r.Say 'Connecting you in one second', :voice => 'woman'
+        r.Say greeting, :voice => 'woman'
         r.Dial :callerId => '+19177192233' do |d|
           d.Number counterparty
         end
