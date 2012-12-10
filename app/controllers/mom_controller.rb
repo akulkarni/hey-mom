@@ -32,11 +32,14 @@ class MomController < ApplicationController
         pc = PhoneCall.new(:inbound => params['Direction'], :duration => params['CallDuration'], :call_sid => params['CallSid'], :status => params['CallStatus'])
       end
 
-      # we don't always know if a call went to voicemail, so we assume calls less than a minute were missed
-      if (params['AnsweredBy'] == 'machine') or (params['CallDuration'] < 60)
+      # we don't always know if a call went to voicemail, so we assume short calls were missed
+      if (params['AnsweredBy'] == 'machine') or (params['CallDuration'].to_i < 75)
         puts 'missed!'
         pc.missed_call = true
-        pc.duration = 0
+        if params['AnsweredBy'] == 'machine'
+          # probably a better way to do this
+          pc.duration = 0
+        end
       end
 
       pc.save!
