@@ -32,7 +32,9 @@ class MomController < ApplicationController
         pc = PhoneCall.new(:inbound => params['Direction'], :duration => params['CallDuration'], :call_sid => params['CallSid'], :status => params['CallStatus'])
       end
 
-      if params['AnsweredBy'] == 'machine'
+      # we don't always know if a call went to voicemail, so we assume calls less than a minute were missed
+      if (params['AnsweredBy'] == 'machine') or (params['CallDuration'] < 60)
+        puts 'missed!'
         pc.missed_call = true
         pc.duration = 0
       end
@@ -57,7 +59,7 @@ class MomController < ApplicationController
       # build up a response
       response = Twilio::TwiML::Response.new do |r|
         r.Say 'Connecting you in one second', :voice => 'woman'
-        r.Dial :callerId => '+19177192233', :action => '/mom/asdf', :if_machine => 'hangup' do |d|
+        r.Dial :callerId => '+19177192233' do |d|
           d.Number '+19175731568'
         end
       end
