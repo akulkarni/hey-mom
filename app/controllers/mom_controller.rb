@@ -1,4 +1,7 @@
 class MomController < ApplicationController
+  SON = '+19175731568'
+  MOM = '+16617480240'
+
   def index
     # render :text => 'it\'s cool'
 
@@ -56,14 +59,25 @@ class MomController < ApplicationController
 #    puts params
 
     unless params['AccountSid'].nil?
-      pc = PhoneCall.new(:inbound => params['Direction'], :duration => 0, :call_sid => params['CallSid'])
+
+      if params['From'] == SON
+        # son --> mom
+        counterparty = MOM
+        direction = 'outbound'
+      elsif params['From'] == MOM
+        # mom --> son
+        counterparty = SON
+        direction = 'inbound'
+      end
+
+      pc = PhoneCall.new(:inbound => direction, :duration => 0, :call_sid => params['CallSid'])
       pc.save!
 
       # build up a response
       response = Twilio::TwiML::Response.new do |r|
         r.Say 'Connecting you in one second', :voice => 'woman'
         r.Dial :callerId => '+19177192233' do |d|
-          d.Number '+19175731568'
+          d.Number counterparty
         end
       end
 

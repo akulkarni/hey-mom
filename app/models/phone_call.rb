@@ -9,6 +9,8 @@ class PhoneCall < ActiveRecord::Base
       inbound = false
     when 'outbound-dial'
       inbound = false
+    when 'outbound'
+      inbound = false
     when 'inbound'
       inbound = true
     end
