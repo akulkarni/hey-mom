@@ -43,6 +43,7 @@ class MomController < ApplicationController
         pc.missed_call = true
         if params['AnsweredBy'] == 'machine'
           # probably a better way to do this
+          puts 'machine!'
           pc.duration = 0
         end
       end
@@ -52,8 +53,8 @@ class MomController < ApplicationController
       # record response time from the previous call in the other direction
       pc_prev = PhoneCall.where(:inbound => !pc.inbound).last!
       unless pc_prev.nil?
-        puts pc
-        puts pc_prev
+        puts pc.id
+        puts pc_prev.id
         pc_prev.response_time = (pc.created_at - pc_prev.created_at).to_i
         pc_prev.save!
       end
