@@ -1,7 +1,7 @@
 class MomController < ApplicationController
   SON = '+19175731568'
-  MOM = '+16617480240'
-#  MOM = '+19735680605'
+#  MOM = '+16617480240'
+  MOM = '+19735680605'
 
   def index
     # render :text => 'it\'s cool'
@@ -116,7 +116,7 @@ class MomController < ApplicationController
         # mom --> son
         counterparty = SON
         direction = 'inbound'
-        name = ''
+        name = 'Dad'
       end
 
       pc = PhoneCall.new(:direction => direction, :duration => 0, :call_sid => params['CallSid'])
