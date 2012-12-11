@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121206034021) do
+ActiveRecord::Schema.define(:version => 20121211034450) do
 
   create_table "phone_calls", :force => true do |t|
     t.integer  "duration"
