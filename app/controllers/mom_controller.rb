@@ -96,7 +96,7 @@ class MomController < ApplicationController
     phone_calls = PhoneCall.where('created_at > ? and inbound = true and missed_call = true', Time.now()-604800)
     sum = 0
     for pc in phone_calls
-      pc.response_time.nil? ? (sum += (Time.now() - pc.created_at)) : (sum += response_time)
+      pc.response_time.nil? ? (sum += (Time.now() - pc.created_at)) : (sum += pc.response_time)
     end
     sum == 0 ? (return 86400) : (return sum / phone_calls.count)
   end
