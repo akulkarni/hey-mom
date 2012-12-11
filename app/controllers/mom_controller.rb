@@ -1,6 +1,7 @@
 class MomController < ApplicationController
   SON = '+19175731568'
   MOM = '+16617480240'
+#  MOM = '+19735680605'
 
   def index
     # render :text => 'it\'s cool'
@@ -32,7 +33,8 @@ class MomController < ApplicationController
         pc.duration = params['CallDuration']
         pc.status = params['CallStatus']
       else
-        pc = PhoneCall.new(:inbound => params['Direction'], :duration => params['CallDuration'], :call_sid => params['CallSid'], :status => params['CallStatus'])
+        puts 'creating new call'
+        pc = PhoneCall.new(:inbound => get_direction(params['Caller']), :duration => params['CallDuration'], :call_sid => params['CallSid'], :status => params['CallStatus'])
       end
 
       # we don't always know if a call went to voicemail, so we assume short calls were missed
@@ -58,6 +60,10 @@ class MomController < ApplicationController
     render :text => 'OK'
   end
 
+  def get_direction(caller_number)
+    caller_number == AJAY ? (return 'outbound') : (return 'inbound')
+  end
+
   def asdf
     render :nothing => true
   end
@@ -81,7 +87,7 @@ class MomController < ApplicationController
         # mom --> son
         counterparty = SON
         direction = 'inbound'
-        name = 'Mom'
+        name = ''
       end
 
       pc = PhoneCall.new(:inbound => direction, :duration => 0, :call_sid => params['CallSid'])
