@@ -51,7 +51,7 @@ class MomController < ApplicationController
       pc.save!
 
       # record response time from the previous call in the other direction
-      pc_prev = PhoneCall.where(:inbound => pc.opposite_direction).last!
+      pc_prev = PhoneCall.where(:inbound => !pc.inbound).last!
       unless pc_prev.nil?
         puts pc.id
         puts pc_prev.id
@@ -63,8 +63,8 @@ class MomController < ApplicationController
     render :text => 'OK'
   end
 
-  def get_direction(caller_number)
-    caller_number == AJAY ? (return 'outbound') : (return 'inbound')
+  def get_inbound(caller_number)
+    caller_number == AJAY ? (return false) : (return true)
   end
 
   def asdf
@@ -93,7 +93,7 @@ class MomController < ApplicationController
         name = ''
       end
 
-      pc = PhoneCall.new(:inbound => direction, :duration => 0, :call_sid => params['CallSid'])
+      pc = PhoneCall.new(:direction => direction, :duration => 0, :call_sid => params['CallSid'])
       pc.save!
 
       # build up a response

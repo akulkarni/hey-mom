@@ -2,7 +2,7 @@ class PhoneCall < ActiveRecord::Base
   validates_uniqueness_of :call_sid, :case_sensitive => true
   validates :duration, :response_time, :numericality => { :only_integer => true }, :allow_nil => true
 
-  def inbound=(direction)
+  def direction=(direction)
     inbound = nil
     case direction
     when 'outbound-api'
@@ -17,7 +17,7 @@ class PhoneCall < ActiveRecord::Base
     write_attribute(:inbound, inbound)
   end
 
-  def inbound
+  def direction
     direction = 'none'
     if read_attribute(:inbound) == true
       direction = 'inbound'
@@ -26,13 +26,5 @@ class PhoneCall < ActiveRecord::Base
     end
     direction
   end
-
-  def opposite_direction
-    read_attribute(:inbound) == true ? (return 'outbound') : (return 'inbound')
-  end
-
-#  def missed?
-#    return read_attribute(:status) == 'no-answer'
-#  end
 
 end
