@@ -51,7 +51,7 @@ class MomController < ApplicationController
       pc.save!
 
       # record response time from the previous call in the other direction
-      pc_prev = PhoneCall.where(:inbound => !pc.inbound).last!
+      pc_prev = PhoneCall.where(:inbound => pc.opposite_direction).last!
       unless pc_prev.nil?
         puts pc.id
         puts pc_prev.id

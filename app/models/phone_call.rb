@@ -27,6 +27,10 @@ class PhoneCall < ActiveRecord::Base
     direction
   end
 
+  def opposite_direction
+    read_attribute(:inbound) == true ? (return 'outbound') : (return 'inbound')
+  end
+
 #  def missed?
 #    return read_attribute(:status) == 'no-answer'
 #  end
