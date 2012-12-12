@@ -72,16 +72,16 @@ class MomController < ApplicationController
   end
 
   def grade
-    score = score_total_outbound_calls / 3 # call at least 3 times
-    score += score_total_seconds / 3600 # speak for at least an hour
-    score += 86400 / score_average_response_time # call back no later than a day after
+    @total_outbound = score_total_outbound_calls
+    @total_minutes = score_total_seconds / 60
+    @average_response_hours = score_average_response_time / 3600
 
-    puts score_total_outbound_calls
-    puts score_total_seconds
-    puts score_average_response_time
+    @score = @total_outbound / 3 # call at least 3 times
+    @score += @total_minutes / 60 # speak for at least an hour
+    @score += 24 / @average_response_hours # call back no later than a day after
 
-    score >= 3 ? (grade = 'A') : (score < 2 ? (grade = 'F') : (grade = 'B'))
-    render :text => grade
+    @score >= 3 ? (@grade = 'A') : (@score < 2 ? (@grade = 'F') : (@grade = 'B'))
+    # render :text => @grade
   end
 
   def score_total_outbound_calls
@@ -89,7 +89,7 @@ class MomController < ApplicationController
   end
 
   def score_total_seconds
-    return PhoneCall.where('created_at > ? and missed_call = false', Time.now()-604800).sum('duration')
+    return PhoneCall.where('created_at > ? and missed_call is not true', Time.now()-604800).sum('duration')
   end
 
   def score_average_response_time
