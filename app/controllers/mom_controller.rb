@@ -79,7 +79,7 @@ class MomController < ApplicationController
 #    @score = @total_outbound / 3 # call at least 3 times
 #    @score += @total_minutes / 60 # speak for at least an hour
 #    @score += 24 / @average_response_hours # call back no later than a day after
-    @score = (@total_outbound / 3) + (@total_seconds / 3600) + (86400 / @average_response_time)
+    @score = @total_outbound/3.to_f + @total_seconds/3600.to_f + 86400/@average_response_time.to_f
 
     @score >= 3 ? (@grade = 'A') : (@score < 2 ? (@grade = 'F') : (@grade = 'B'))
     # render :text => @grade
