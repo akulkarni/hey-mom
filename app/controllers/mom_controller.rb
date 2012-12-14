@@ -34,7 +34,7 @@ class MomController < ApplicationController
         pc.status = params['CallStatus']
       else
         puts 'creating new call'
-        pc = PhoneCall.new(:inbound => get_direction(params['Caller']), :duration => params['CallDuration'], :call_sid => params['CallSid'], :status => params['CallStatus'])
+        pc = PhoneCall.new(:inbound => get_inbound(params['Caller']), :duration => params['CallDuration'], :call_sid => params['CallSid'], :status => params['CallStatus'])
       end
 
       # we don't always know if a call went to voicemail, so we assume short calls were missed
@@ -53,8 +53,6 @@ class MomController < ApplicationController
       # record response time from the previous call in the other direction
       pc_prev = PhoneCall.where(:inbound => !pc.inbound).last!
       unless pc_prev.nil?
-        puts pc.id
-        puts pc_prev.id
         pc_prev.response_time = (pc.created_at - pc_prev.created_at).to_i
         pc_prev.save!
       end
