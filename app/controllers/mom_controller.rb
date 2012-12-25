@@ -85,10 +85,10 @@ class MomController < ApplicationController
     case @score
       when 0...2
         @grade = 'F'
-        @mom_picture = 'mom-unhappy.jpg'
+        @mom_picture = 'mom-stern.jpg'
       when 2...3
         @grade = 'B'
-        @mom_picture = 'mom-stern.jpg'
+        @mom_picture = 'mom-unhappy.jpg'
       else
         @grade = 'A'
         @mom_picture = 'mom-happy.jpg'
