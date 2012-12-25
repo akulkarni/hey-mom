@@ -80,7 +80,20 @@ class MomController < ApplicationController
     #   respond no later than a day after you miss a call
     @score = @total_outbound/3.to_f + @total_seconds/3600.to_f + 86400/@average_response_time.to_f
 
-    @score >= 3 ? (@grade = 'A') : (@score < 2 ? (@grade = 'F') : (@grade = 'B'))
+#    @score >= 3 ? (@grade = 'A') : (@score < 2 ? (@grade = 'F') : (@grade = 'B'))
+
+    case @score
+      when 0...2
+        @grade = 'F'
+        @mom_picture = 'mom-unhappy.jpg'
+      when 2...3
+        @grade = 'B'
+        @mom_picture = 'mom-stern.jpg'
+      else
+        @grade = 'A'
+        @mom_picture = 'mom-happy.jpg'
+    end
+
     # render :text => @grade
   end
 
