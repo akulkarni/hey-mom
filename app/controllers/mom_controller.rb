@@ -130,7 +130,7 @@ class MomController < ApplicationController
         # mom --> son
         counterparty = SON
         direction = 'inbound'
-        name = 'Dad'
+        name = 'Mom'
       end
 
       pc = PhoneCall.new(:direction => direction, :duration => 0, :call_sid => params['CallSid'])
