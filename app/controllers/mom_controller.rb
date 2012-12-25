@@ -126,7 +126,8 @@ class MomController < ApplicationController
         counterparty = MOM
         direction = 'outbound'
         name = 'Ajay'
-      elsif params['From'] == MOM
+#      elsif params['From'] == MOM
+      else
         # mom --> son
         counterparty = SON
         direction = 'inbound'
