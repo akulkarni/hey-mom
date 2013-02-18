@@ -1,0 +1,11 @@
+development: &development
+  adapter: postgresql
+  database: heymom_dev
+  username: 
+  password: 
+  host: localhost
+  min_messages: warning
+
+test: &test
+  <<: *development
+  database: heymom_test
