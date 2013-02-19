@@ -1,30 +1,13 @@
 class MomController < ApplicationController
   SON = '+19175731568'
-#  MOM = '+16617480240'
-#  MOM = '+19735680605'
   MOM = '+19739794384'
 
+  def ok
+    render :text => 'OK'
+  end
+
   def index
-    # render :text => 'it\'s cool'
-
-    # set up a client to talk to the Twilio REST API
-    account_sid = 'AC2c0c745ec4d44b2e8c34ce702d81dadd'
-    auth_token = '4c8d9d87c5e4b1f0634a6a27e9bc9300'
-    @client = Twilio::REST::Client.new account_sid, auth_token
-
-    # send an sms
-    # @client.account.sms.messages.create(
-    #                              :from => '+19177192233',
-    #                              :to => '+19175731568',
-    #                              :body => 'HOOAH'
-    #                             )
-
-    # build up a response
-    response = Twilio::TwiML::Response.new do |r|
-      r.Say 'hey buddy', :voice => 'woman'
-    end
-
-    render :xml => response.text
+    return ok
   end
 
   def call_ended
@@ -66,10 +49,6 @@ class MomController < ApplicationController
     caller_number == AJAY ? (return false) : (return true)
   end
 
-  def asdf
-    render :nothing => true
-  end
-
   def grade
     @total_outbound = score_total_outbound_calls
     @total_seconds = score_total_seconds
@@ -80,8 +59,6 @@ class MomController < ApplicationController
     #   speak for at least 60 minutes a week
     #   respond no later than a day after you miss a call
     @score = @total_outbound/3.to_f + @total_seconds/3600.to_f + 86400/@average_response_time.to_f
-
-#    @score >= 3 ? (@grade = 'A') : (@score < 2 ? (@grade = 'F') : (@grade = 'B'))
 
     case @score
       when 0...2
@@ -94,8 +71,6 @@ class MomController < ApplicationController
         @grade = 'A'
         @mom_picture = 'mom-happy.jpg'
     end
-
-    # render :text => @grade
   end
 
   def score_total_outbound_calls
@@ -126,7 +101,7 @@ class MomController < ApplicationController
         counterparty = MOM
         direction = 'outbound'
         name = 'Ajay'
-#      elsif params['From'] == MOM
+#      elsif params['From'] == MOM  # TODO think this through. would like to restrict this to MOM but her number is blocked
       else
         # mom --> son
         counterparty = SON
@@ -161,21 +136,29 @@ class MomController < ApplicationController
 
     @account = @client.account
     @call = @account.calls.create({:from => '+19177192233', :to => '+19175731568',
-#                                    :application_sid => 'APdc87b7898e076eb779098b3293d0e60a',
                                     :url => 'http://callmom.herokuapp.com/mom',
                                   :status_callback => 'http://callmom.herokuapp.com/mom/call_ended',
                                     :if_machine => 'hangup'
                                   })
-
-#    pc = PhoneCall.new(:direction => 'outbound', :duration => 0, :call_sid => @call.sid)
-#    pc.save!
-
     render :text => 'OK'
   end
 
   def logs
     @phone_calls = PhoneCall.order(:created_at).reverse_order
-#    @phone_calls = PhoneCall.all
+  end
+
+  def test
+    # set up a client to talk to the Twilio REST API
+    account_sid = 'AC2c0c745ec4d44b2e8c34ce702d81dadd'
+    auth_token = '4c8d9d87c5e4b1f0634a6a27e9bc9300'
+    @client = Twilio::REST::Client.new account_sid, auth_token
+
+    # build up a response
+    response = Twilio::TwiML::Response.new do |r|
+      r.Say 'hey buddy', :voice => 'woman'
+    end
+
+    render :xml => response.text
   end
 
 end
