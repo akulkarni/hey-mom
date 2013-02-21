@@ -45,55 +45,7 @@ class MomController < ApplicationController
     render :text => 'OK'
   end
 
-  def get_inbound(caller_number)
-    caller_number == AJAY ? (return false) : (return true)
-  end
-
-  def grade
-    @total_outbound = score_total_outbound_calls
-    @total_seconds = score_total_seconds
-    @average_response_time = score_average_response_time
-
-    # to be a good son,
-    #   call at least 3x a week
-    #   speak for at least 60 minutes a week
-    #   respond no later than a day after you miss a call
-    @score = @total_outbound/3.to_f + @total_seconds/3600.to_f + 86400/@average_response_time.to_f
-
-    case @score
-      when 0...2
-        @grade = 'F'
-        @mom_picture = 'mom-stern.jpg'
-      when 2...3
-        @grade = 'B'
-        @mom_picture = 'mom-unhappy.jpg'
-      else
-        @grade = 'A'
-        @mom_picture = 'mom-happy.jpg'
-    end
-  end
-
-  def score_total_outbound_calls
-    return PhoneCall.where('created_at > ? and inbound = false', Time.now()-604800).count
-  end
-
-  def score_total_seconds
-    return PhoneCall.where('created_at > ? and missed_call is not true', Time.now()-604800).sum('duration')
-  end
-
-  def score_average_response_time
-    phone_calls = PhoneCall.where('created_at > ? and inbound = true and missed_call = true', Time.now()-604800)
-    sum = 0
-    for pc in phone_calls
-      pc.response_time.nil? ? (sum += (Time.now() - pc.created_at)) : (sum += pc.response_time)
-    end
-    sum == 0 ? (return 86400) : (return sum / phone_calls.count)
-  end
-
   def create
-    # Parameters: {"AccountSid"=>"AC2c0c745ec4d44b2e8c34ce702d81dadd", "ToZip"=>"", "FromState"=>"NY", "Called"=>"+19177192233", "FromCountry"=>"US", "CallerCountry"=>"US", "CalledZip"=>"", "Direction"=>"inbound", "FromCity"=>"NEW YORK", "CalledCountry"=>"US", "CallerState"=>"NY", "CallSid"=>"CA7287ed5793ee58458ea8ffb931e49224", "CalledState"=>"NY", "From"=>"+19175731568", "CallerZip"=>"10028", "FromZip"=>"10028", "CallStatus"=>"ringing", "ToCity"=>"", "ToState"=>"NY", "To"=>"+19177192233", "ToCountry"=>"US", "CallerCity"=>"NEW YORK", "ApiVersion"=>"2010-04-01", "Caller"=>"+19175731568", "CalledCity"=>""}
-#    puts params
-
     unless params['AccountSid'].nil?
 
       if params['From'] == SON
@@ -128,37 +80,12 @@ class MomController < ApplicationController
 
   end
 
-  def call
-    # set up a client to talk to the Twilio REST API
-    account_sid = 'AC2c0c745ec4d44b2e8c34ce702d81dadd'
-    auth_token = '4c8d9d87c5e4b1f0634a6a27e9bc9300'
-    @client = Twilio::REST::Client.new account_sid, auth_token
-
-    @account = @client.account
-    @call = @account.calls.create({:from => '+19177192233', :to => '+19175731568',
-                                    :url => 'http://callmom.herokuapp.com/mom',
-                                  :status_callback => 'http://callmom.herokuapp.com/mom/call_ended',
-                                    :if_machine => 'hangup'
-                                  })
-    render :text => 'OK'
+  def get_inbound(caller_number)
+    caller_number == AJAY ? (return false) : (return true)
   end
 
   def logs
     @phone_calls = PhoneCall.order(:created_at).reverse_order
-  end
-
-  def test
-    # set up a client to talk to the Twilio REST API
-    account_sid = 'AC2c0c745ec4d44b2e8c34ce702d81dadd'
-    auth_token = '4c8d9d87c5e4b1f0634a6a27e9bc9300'
-    @client = Twilio::REST::Client.new account_sid, auth_token
-
-    # build up a response
-    response = Twilio::TwiML::Response.new do |r|
-      r.Say 'hey buddy', :voice => 'woman'
-    end
-
-    render :xml => response.text
   end
 
 end

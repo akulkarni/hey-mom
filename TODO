@@ -1,0 +1,17 @@
+* Change name from Hey Mom
+- heythere
+- heyo
+- hellothere
+- warmer
+
+* Store pairs for a given user
+
+* Store 3 pictures per pair
+
+* Register endpoint that saves Twilio keys?
+
+* Remove all mention of my phone number, parents' phone numbers, twilio keys, photos, etc
+
+* Allow multiple users to sign up
+
+* Programatically pick up a phone number per pair
