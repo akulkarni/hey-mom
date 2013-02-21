@@ -1,3 +1,5 @@
+* Update Twilio to point to /call and not /mom
+
 * Change name from Hey Mom
 - heythere
 - heyo
