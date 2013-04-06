@@ -11,7 +11,7 @@ class RegisterController < ApplicationController
     
     unless name.nil? or phone_number.nil? or contact_name.nil? or contact_phone_number.nil?
       system_number = get_twilio_system_number
-      user = Users.new(:name => name,
+      user = User.new(:name => name,
                        :phone_number => phone_number,
                        :contact_name => contact_name,
                        :contact_phone_number => contact_phone_number,

@@ -13,7 +13,7 @@ class CallController < ApplicationController
   def create
     unless params['AccountSid'].nil?
       system_number = params['To']
-      user = Users.where("system_number = '%s'", system_number).last
+      user = User.where("system_number = '%s'", system_number).last
       unless user.nil?
         if params['From'] == user.phone_number
           # son --> mom
