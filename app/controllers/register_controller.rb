@@ -1,9 +1,24 @@
 class RegisterController < ApplicationController
   def index
-    render :text => get_twilio_system_number
+    render :text => 'OK'
   end
 
   def create
+    name = params['name']
+    phone_number = params['phone_number']
+    contact_name = params['name']
+    contact_phone_number = params['contact_phone_number']
+    
+    unless name.nil? or phone_number.nil? or contact_name.nil? or contact_phone_number.nil?
+      system_number = get_twilio_system_number
+      user = Users.new(:name => name,
+                       :phone_number => phone_number,
+                       :contact_name => contact_name,
+                       :contact_phone_number => contact_phone_number,
+                       :system_number => system_number)
+      user.save!
+    end
+
     render :text => 'OK'
   end
 
