@@ -6,20 +6,20 @@ class RegisterController < ApplicationController
   def create
     name = params['name'].downcase
     phone_number = params['phone_number']
-    contact_name = params['name'].downcase
+    contact_name = params['contact_name'].downcase
     contact_phone_number = params['contact_phone_number']
     
     unless name.nil? or phone_number.nil? or contact_name.nil? or contact_phone_number.nil?
       system_number = get_twilio_system_number
       user = User.new(:name => name,
-                       :phone_number => phone_number,
+                       :phone_number => '+' + phone_number,
                        :contact_name => contact_name,
-                       :contact_phone_number => contact_phone_number,
+                       :contact_phone_number => '+' + contact_phone_number,
                        :system_number => system_number)
       user.save!
     end
 
-    render :text => 'OK'
+    render :text => system_number
   end
 
   def get_twilio_system_number
