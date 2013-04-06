@@ -3,6 +3,7 @@
   %h1= @grade
   %h2 #{@score.round(1)} is your total score
   %p #{@total_outbound} outbound calls
+  %p #{@total_seconds / 60.round(1)} total talk time (mins)
   %p #{(@average_response_time / 3600).round(1)} average response time (hours)
 - else
   missing user.
