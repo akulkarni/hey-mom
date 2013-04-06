@@ -1,0 +1,10 @@
+- unless @user.nil?
+  = image_tag @mom_picture
+  %h1= @grade
+  %h2 #{@score.round(1)} is your total score
+  %p #{@total_outbound} outbound calls
+  %p #{(@average_response_time / 3600).round(1)} average response time (hours)
+- else
+  missing user.
+
+  

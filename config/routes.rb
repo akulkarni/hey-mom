@@ -5,6 +5,8 @@ Callmom::Application.routes.draw do
   match 'test/call' => 'test#call'
   match 'test/create_dummy_log' => 'test#create_dummy_log'
 
+  match 'grade/:user' => 'grade#index'
+
   resources :call, :grade, :test, :register
 
 end

@@ -4,9 +4,9 @@ class RegisterController < ApplicationController
   end
 
   def create
-    name = params['name']
+    name = params['name'].downcase
     phone_number = params['phone_number']
-    contact_name = params['name']
+    contact_name = params['name'].downcase
     contact_phone_number = params['contact_phone_number']
     
     unless name.nil? or phone_number.nil? or contact_name.nil? or contact_phone_number.nil?

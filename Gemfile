@@ -19,5 +19,5 @@ end
 gem 'jquery-rails'
 gem 'thin'
 gem 'twilio-ruby'
-
+gem 'haml', '>= 2.2.0'
 
