@@ -18,13 +18,16 @@ class GradeController < ApplicationController
       case @score
       when 0...2
         @grade = 'F'
-        @mom_picture = 'mom-stern.jpg'
+#        @mom_picture = 'mom-stern.jpg'
+        @mom_picture = get_sad_picture(@user)
       when 2...3
         @grade = 'B'
-        @mom_picture = 'mom-unhappy.jpg'
+#        @mom_picture = 'mom-unhappy.jpg'
+        @mom_picture = get_ok_picture(@user)
       else
         @grade = 'A'
-        @mom_picture = 'mom-happy.jpg'
+#        @mom_picture = 'mom-happy.jpg'
+        @mom_picture = get_happy_picture(@user)
       end
     end
   end
@@ -51,4 +54,20 @@ class GradeController < ApplicationController
     end
     sum == 0 ? (return 86400) : (return sum / phone_calls.count)
   end
+  
+  def get_happy_picture(user)
+    user.name == 'ajay' ? (return 'mom-happy.jpg') : 
+      (return 'http://media.giphy.com/media/12INbAYtjdeTbW/original.gif')
+  end
+
+  def get_ok_picture(user)
+    user.name == 'ajay' ? (return 'mom-unhappy.jpg') : 
+      (return 'http://media.giphy.com/media/8boMf1VXVHoJy/original.gif')
+  end
+
+  def get_sad_picture(user)
+    user.name == 'ajay' ? (return 'mom-stern.jpg') : 
+      (return 'http://media.giphy.com/media/1hiVNxD34TpC0/original.gif')
+  end
 end
+
