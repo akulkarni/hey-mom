@@ -27,7 +27,7 @@ class CallController < ApplicationController
           counterparty = user.phone_number
         end
 
-        pc = PhoneCall.new(:direction => direction, :duration => 0, :call_sid => params['CallSid'], :system_number = system_number)
+        pc = PhoneCall.new(:direction => direction, :duration => 0, :call_sid => params['CallSid'], :system_number => system_number)
         pc.save!
 
         # build up a response
