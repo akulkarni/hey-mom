@@ -18,7 +18,6 @@ class CallController < ApplicationController
         counterparty = MOM
         direction = 'outbound'
         name = 'Ajay'
-#      elsif params['From'] == MOM  # TODO think this through. would like to restrict this to MOM but her number is blocked
       else
         # mom --> son
         counterparty = SON
@@ -30,10 +29,11 @@ class CallController < ApplicationController
       pc.save!
 
       # build up a response
+      system_number = params['To']
       greeting = 'Hi %s, connecting you right now.' % name
       response = Twilio::TwiML::Response.new do |r|
         r.Say greeting, :voice => 'woman'
-        r.Dial :callerId => '+19177192233' do |d|
+        r.Dial :callerId => system_number do |d|
           d.Number counterparty
         end
       end
