@@ -6,8 +6,6 @@ Before you start, make sure you run `bundle install` to install any missing Gems
 
 ## Environment variables
 
-Set the following local variables.
-
 For example, on `bash`:
 
     export TWILIO_ACCOUNT_SID=(get from ajay)
@@ -43,6 +41,7 @@ _Note that only US phone numbers are supported for now._
 Send at HTTP POST request to `/register`.
 
 For example:
+
     curl -d "" "http://127.0.0.1:5000/register?name=ajay&phone_number=19175551212&contact_name=mom&contact_phone_number=19736661313"
 
 
