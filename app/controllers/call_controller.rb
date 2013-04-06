@@ -82,7 +82,7 @@ class CallController < ApplicationController
   
   def get_inbound(system_number, caller_number)
     #    caller_number == AJAY ? (return false) : (return true)
-    user = Users.where(:system_number => system_number).last
+    user = User.where(:system_number => system_number).last
     return caller_number == user.contact_phone_number
   end
 
