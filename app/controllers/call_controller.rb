@@ -20,26 +20,30 @@ class CallController < ApplicationController
           direction = 'outbound'
           name = user.name
           counterparty = user.contact_phone_number
-        else
+        elsif params['From'] == user.contact_phone_number 
+          or system_number == '+19177192233' # hack to handle ajay's mom's blocked number
           # mom --> son
           direction = 'inbound'
           name = user.contact_name
           counterparty = user.phone_number
         end
 
-        pc = PhoneCall.new(:direction => direction, :duration => 0, :call_sid => params['CallSid'], :system_number => system_number)
-        pc.save!
+        unless counterparty.nil?
+          pc = PhoneCall.new(:direction => direction, :duration => 0, :call_sid => params['CallSid'], :system_number => system_number)
+          pc.save!
 
-        # build up a response
-        greeting = 'Hi %s, connecting you right now.' % name
-        response = Twilio::TwiML::Response.new do |r|
-          r.Say greeting, :voice => 'woman'
-          r.Dial :callerId => system_number do |d|
-            d.Number counterparty
+          # build up a response
+          greeting = 'Hi %s, connecting you right now.' % name
+          response = Twilio::TwiML::Response.new do |r|
+            r.Say greeting, :voice => 'woman'
+            r.Dial :callerId => system_number do |d|
+              d.Number counterparty
+            end
           end
+          render :xml => response.text
+        else
+          render :text => 'OK'
         end
-
-        render :xml => response.text
       else
         render :text => params
       end
