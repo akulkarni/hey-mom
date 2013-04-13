@@ -34,16 +34,16 @@ class CallController < ApplicationController
           # build up a response
           greeting = 'Hi %s, connecting you right now.' % name
           response = Twilio::TwiML::Response.new do |r|
-            r.Say greeting, :voice => 'woman', :language => 'en-gb'
+            r.Say greeting, :voice => 'woman', :language => 'en'
             r.Dial :callerId => system_number do |d|
               d.Number counterparty
             end
           end
           render :xml => response.text
         else
-          greeting = 'Sorry buddy, wrong number.'
+          greeting = 'Sorry buddy. Wrong number.'
           response = Twilio::TwiML::Response.new do |r|
-            r.Say greeting, :voice => 'woman', :language => 'en-gb'
+            r.Say greeting, :voice => 'man', :language => 'en-gb'
           end
           render :xml => response.text
         end
