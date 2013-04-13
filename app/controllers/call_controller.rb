@@ -20,8 +20,7 @@ class CallController < ApplicationController
           direction = 'outbound'
           name = user.name
           counterparty = user.contact_phone_number
-        elsif params['From'] == user.contact_phone_number 
-          or system_number == '+19177192233' # hack to handle ajay's mom's blocked number
+        elsif params['From'] == user.contact_phone_number or system_number == '+19177192233' # hack to handle ajay's mom's blocked number
           # mom --> son
           direction = 'inbound'
           name = user.contact_name
