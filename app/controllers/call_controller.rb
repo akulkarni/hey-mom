@@ -41,7 +41,11 @@ class CallController < ApplicationController
           end
           render :xml => response.text
         else
-          render :text => 'OK'
+          greeting = 'Sorry buddy, wrong number.'
+          response = Twilio::TwiML::Response.new do |r|
+            r.Say greeting, :voice => 'man'
+          end
+          render :xml => response.text
         end
       else
         render :text => params
