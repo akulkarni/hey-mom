@@ -2,7 +2,7 @@ namespace :db do
 	desc "Calculate Score at 8:00 am daily and send SMS"
 	task :schedule_sms_task => :environment do
 		@users = User.all
-		debugger
+		
 		unless @users.nil?
 			@users.each do |user|
 					
