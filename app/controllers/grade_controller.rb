@@ -1,9 +1,10 @@
 class GradeController < ApplicationController
 
   def index
+    
     name = params['user']
     @user = User.where(:name => name.downcase).last unless name.nil?
-    
+  
     unless @user.nil?
       @total_outbound = score_total_outbound_calls(@user)
       @total_seconds = score_total_seconds(@user)

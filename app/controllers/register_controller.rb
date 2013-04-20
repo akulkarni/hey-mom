@@ -4,6 +4,7 @@ class RegisterController < ApplicationController
   end
 
   def create
+    
     name = params['name'].downcase
     phone_number = params['phone_number']
     contact_name = params['contact_name'].downcase

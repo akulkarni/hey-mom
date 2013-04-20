@@ -7,6 +7,11 @@ Callmom::Application.routes.draw do
 
   match 'grade/:user' => 'grade#index'
 
-  resources :call, :grade, :test, :register
+  match '/register' => 'register#create'
+
+  resources :call
+  resources :grade
+  resources :test
+  resources :register
 
 end
