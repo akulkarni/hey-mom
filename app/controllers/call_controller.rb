@@ -1,6 +1,4 @@
 class CallController < ApplicationController
-  SON = '+19175731568'
-  MOM = '+19739794384'
 
   def ok
     render :text => 'OK'

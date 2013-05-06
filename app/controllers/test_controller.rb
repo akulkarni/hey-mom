@@ -1,10 +1,13 @@
 class TestController < ApplicationController
   # methods that make development easier
 
-  def call
-    # set up a client to talk to the Twilio REST API
-    account_sid = 'AC2c0c745ec4d44b2e8c34ce702d81dadd'
-    auth_token = '4c8d9d87c5e4b1f0634a6a27e9bc9300'
+  def index
+    render :text => 'OK'
+  end
+
+  def create_dummy_call
+    account_sid = ENV['TWILIO_ACCOUNT_SID']
+    auth_token = ENV['TWILIO_AUTH_TOKEN']
     @client = Twilio::REST::Client.new account_sid, auth_token
     
     @account = @client.account
