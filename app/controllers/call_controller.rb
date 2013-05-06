@@ -8,6 +8,7 @@ class CallController < ApplicationController
     return ok
   end
 
+  MISSED_CALL_TIMEOUT_SECONDS = 5
   def create
     unless params['AccountSid'].nil?
       system_number = params['To']
@@ -18,7 +19,8 @@ class CallController < ApplicationController
           direction = 'outbound'
           name = user.name
           counterparty = user.contact_phone_number
-        elsif params['From'] == user.contact_phone_number or system_number == '+19177192233' # hack to handle ajay's mom's blocked number
+        elsif params['From'] == user.contact_phone_number 
+          or system_number == '+19177192233' # hack to handle ajay's mom's blocked number
           # mom --> son
           direction = 'inbound'
           name = user.contact_name
@@ -26,14 +28,17 @@ class CallController < ApplicationController
         end
 
         unless counterparty.nil?
-          pc = PhoneCall.new(:direction => direction, :duration => 0, :call_sid => params['CallSid'], :system_number => system_number)
+          pc = PhoneCall.new(:direction => direction, 
+                             :duration => 0, 
+                             :call_sid => params['CallSid'], 
+                             :system_number => system_number)
           pc.save!
 
           # build up a response
           greeting = 'Hi %s, connecting you right now.' % name
           response = Twilio::TwiML::Response.new do |r|
             r.Say greeting, :voice => 'woman', :language => 'en'
-            r.Dial :callerId => system_number do |d|
+            r.Dial :callerId => system_number, :timeout => MISSED_CALL_TIMEOUT do |d|
               d.Number counterparty
             end
           end
@@ -64,7 +69,10 @@ class CallController < ApplicationController
 
       # we don't always know if a call went to voicemail, so we assume short calls were missed
       if (params['AnsweredBy'] == 'machine') or
-          ((params['CallDuration'].to_i > 10) and (params['CallDuration'].to_i < 65))
+          ((params['CallDuration'].to_i > 10) 
+           and (params['CallDuration'].to_i < MISSED_CALL_TIMEOUT_SECONDS)) or
+          (params['DialCallStatus'] == 'no-answer')
+
         pc.missed_call = true
         if params['AnsweredBy'] == 'machine'
           # probably a better way to do this
@@ -75,7 +83,6 @@ class CallController < ApplicationController
       pc.save!
 
       # record response time from the previous call in the other direction
-#      pc_prev = PhoneCall.where(:inbound => !pc.inbound).last!
       pc_prev = PhoneCall.where(:inbound => !pc.inbound, :system_number => params['To']).last!
       unless pc_prev.nil?
         pc_prev.response_time = (pc.created_at - pc_prev.created_at).to_i
@@ -87,7 +94,6 @@ class CallController < ApplicationController
   end
   
   def get_inbound(system_number, caller_number)
-    #    caller_number == AJAY ? (return false) : (return true)
     user = User.where(:system_number => system_number).last
     return caller_number == user.contact_phone_number
   end
